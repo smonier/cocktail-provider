@@ -25,22 +25,18 @@
     <c:when test="${empty param}">
         <c:set var="selectedLetter" value='${cdb:getRandomLetter(1)}'/>
         <c:set var="cocktailList" value="${cdb:getCocktailByLetter(selectedLetter)}"/>
-        <script>document.getElementById("cocktailpageId").innerHTML = "Cocktails starting with ${selectedLetter}";</script>
     </c:when>
     <c:when test="${not empty param.letter}">
         <c:set var="selectedLetter" value='${param.letter}'/>
         <c:set var="cocktailList" value="${cdb:getCocktailByLetter(selectedLetter)}"/>
-        <script>document.getElementById("cocktailpageId").innerHTML = "Cocktails starting with ${selectedLetter}";</script>
     </c:when>
     <c:when test="${not empty param.cocktailName}">
         <c:set var="cocktailName" value='${param.cocktailName}'/>
         <c:set var="cocktailList" value="${cdb:getCocktailByName(cocktailName)}"/>
-        <script>document.getElementById("cocktailpageId").innerHTML = "Cocktails named ${cocktailName}";</script>
     </c:when>
     <c:when test="${not empty param.ingredient}">
         <c:set var="cocktailIngredient" value='${param.ingredient}'/>
         <c:set var="cocktailList" value="${cdb:getCocktailByIngredient(cocktailIngredient)}"/>
-        <script>document.getElementById("cocktailpageId").innerHTML = "Cocktails made of ${cocktailIngredient}";</script>
     </c:when>
 </c:choose>
 <div class="container">
@@ -164,23 +160,25 @@
     </div>
 </div>
 <div class="row blog-refinement-bar mb-5 w-100">
-    <form class="form-inline justify-content-center w-100" action="${url.base}${renderContext.mainResource.node.path}.html" method="get">
-        <input type="text" class="form-control mb-2 mr-sm-2" id="cocktailName" name="cocktailName" placeholder="Cocktail Name">
+    <form class="form-inline justify-content-center w-100"
+          action="${url.base}${renderContext.mainResource.node.path}.html" method="get">
+        <input type="text" class="form-control mb-2 mr-sm-2" id="cocktailName" name="cocktailName"
+               placeholder="Cocktail Name">
         <button type="submit" class="btn btn-primary mb-2">Search</button>
     </form>
 </div>
 <c:choose>
     <c:when test="${empty param}">
-        <script>document.getElementById("cocktailpageId").innerHTML = "Cocktails starting with ${selectedLetter}";</script>
+        <script>$("#cocktailpageId").html("Cocktails starting with ${selectedLetter}")</script>
     </c:when>
     <c:when test="${not empty param.letter}">
-        <script>document.getElementById("cocktailpageId").innerHTML = "Cocktails starting with ${selectedLetter}";</script>
+        <script>$("#cocktailpageId").html("Cocktails starting with ${selectedLetter}")</script>
     </c:when>
     <c:when test="${not empty param.cocktailName}">
-        <script>document.getElementById("cocktailpageId").innerHTML = "Cocktails named ${cocktailName}";</script>
+        <script>$("#cocktailpageId").html("Cocktails named ${cocktailName}")</script>
     </c:when>
     <c:when test="${not empty param.ingredient}">
-        <script>document.getElementById("cocktailpageId").innerHTML = "Cocktails made of ${cocktailIngredient}";</script>
+        <script>$("#cocktailpageId").html("Cocktails made of ${cocktailIngredient}")</script>
     </c:when>
 </c:choose>
 
