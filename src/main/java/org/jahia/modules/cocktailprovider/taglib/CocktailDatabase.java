@@ -27,21 +27,7 @@ public class CocktailDatabase {
 
     private static final Logger logger = LoggerFactory.getLogger(CocktailDatabase.class);
     private static String apiKeyValue;
-
-    private static String API_URL = "https://www.thecocktaildb.com/api/json/v1/1";
-    private static String API_COCKTAIL_BYNAME = "/search.php?s=";
-    private static String API_COCKTAIL_BYLETTER = "/search.php?f=";
-    private static String API_INGREDIENT_BYNAME = "/search.php?i=";
-    private static String API_COCKTAIL_BYID = "/lookup.php?i=";
-    private static String API_INGREDIENT_BYID = "/lookup.php?iid=";
-    private static String API_COCKTAIL_BYINGREDIENT = "/filter.php?i=";
-    private static String API_INGREDIENT_LIST = "/list.php?i=list";
-    private static String API_CATEGORIES_LIST = "/list.php?c=list";
-
-    private static Pattern YEAR_PATTERN = Pattern.compile("[0-9]{4,4}");
-    private static Pattern DATE_PATTERN = Pattern.compile("[0-9]{4,4}/[0-9]{2,2}");
     private static CrunchifyInMemoryCache<String, String> cache = new CrunchifyInMemoryCache<String, String>(1200, 500, 200);
-
 
     public void setApiKeyValue(String apiKeyValue) {
         if (apiKeyValue.startsWith("'")) {
@@ -51,8 +37,18 @@ public class CocktailDatabase {
         }
     }
 
+    private static String API_URL = "https://www.thecocktaildb.com/api/json/v1/";
+    private static String API_COCKTAIL_BYNAME = "/search.php?s=";
+    private static String API_COCKTAIL_BYLETTER = "/search.php?f=";
+    private static String API_INGREDIENT_BYNAME = "/search.php?i=";
+    private static String API_COCKTAIL_BYID = "/lookup.php?i=";
+    private static String API_INGREDIENT_BYID = "/lookup.php?iid=";
+    private static String API_COCKTAIL_BYINGREDIENT = "/filter.php?i=";
+    private static String API_INGREDIENT_LIST = "/list.php?i=list";
+    private static String API_CATEGORIES_LIST = "/list.php?c=list";
+
     public static List<Cocktail> getCocktailByName(String Name) throws RepositoryException, IOException, JSONException, URISyntaxException {
-        String cdbUrl = API_URL + API_COCKTAIL_BYNAME + URLEncoder.encode(Name, StandardCharsets.UTF_8);
+        String cdbUrl = API_URL + apiKeyValue + API_COCKTAIL_BYNAME + URLEncoder.encode(Name, StandardCharsets.UTF_8);
         String jsonString = null;
         logger.info("**getCocktailByName** URL: " + cdbUrl);
 
@@ -68,14 +64,20 @@ public class CocktailDatabase {
             logger.info("Put Response in Cache ...");
             logger.info("Call API: " + cdbUrl);
         }
-        JSONObject cocktailApiJsonObject = new JSONObject(jsonString);
-        JSONArray cocktailArray = new JSONArray(cocktailApiJsonObject.getString("drinks"));
-
-        return getCocktails(cocktailArray);
+        try {
+            JSONObject cocktailApiJsonObject = new JSONObject(jsonString);
+            JSONArray cocktailArray = new JSONArray(cocktailApiJsonObject.getString("drinks"));
+            return getCocktails(cocktailArray);
+        } catch (JSONException e) {
+            logger.error("Error parsing JSONObject in JSONArray: " + API_COCKTAIL_BYNAME);
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    public static List<Cocktail> getCocktailByLetter(String Letter) throws RepositoryException, IOException, JSONException {
-        String cdbUrl = API_URL + API_COCKTAIL_BYLETTER + Letter.charAt(0);
+    public static List<Cocktail> getCocktailByLetter(String Letter) throws
+            RepositoryException, IOException, JSONException {
+        String cdbUrl = API_URL + apiKeyValue + API_COCKTAIL_BYLETTER + Letter.charAt(0);
         String jsonString = null;
         logger.info("**getCocktailByLetter** URL: " + cdbUrl);
 
@@ -91,14 +93,19 @@ public class CocktailDatabase {
             logger.info("Put Response in Cache ...");
             logger.info("Call API: " + cdbUrl);
         }
-        JSONObject cocktailApiJsonObject = new JSONObject(jsonString);
-        JSONArray cocktailArray = new JSONArray(cocktailApiJsonObject.getString("drinks"));
-
-        return getCocktails(cocktailArray);
+        try {
+            JSONObject cocktailApiJsonObject = new JSONObject(jsonString);
+            JSONArray cocktailArray = new JSONArray(cocktailApiJsonObject.getString("drinks"));
+            return getCocktails(cocktailArray);
+        } catch (JSONException e) {
+            logger.error("Error parsing JSONObject in JSONArray: " + API_COCKTAIL_BYLETTER);
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static Cocktail getCocktailById(String Id) throws RepositoryException, JSONException, IOException {
-        String cdbUrl = API_URL + API_COCKTAIL_BYID + Id;
+        String cdbUrl = API_URL + apiKeyValue + API_COCKTAIL_BYID + Id;
         String jsonString = null;
         logger.info("**getCocktailById** URL: " + cdbUrl);
 
@@ -114,15 +121,21 @@ public class CocktailDatabase {
             logger.info("Put Response in Cache ...");
             logger.info("Call API: " + cdbUrl);
         }
-        JSONObject cocktailApiJsonObject = new JSONObject(jsonString);
-        JSONArray cocktailArray = new JSONArray(cocktailApiJsonObject.getString("drinks"));
-
-        List<Cocktail> cocktails = getCocktails(cocktailArray);
-        return cocktails.isEmpty()? null:cocktails.get(0);
+        try {
+            JSONObject cocktailApiJsonObject = new JSONObject(jsonString);
+            JSONArray cocktailArray = new JSONArray(cocktailApiJsonObject.getString("drinks"));
+            List<Cocktail> cocktails = getCocktails(cocktailArray);
+            return cocktails.isEmpty() ? null : cocktails.get(0);
+        } catch (JSONException e) {
+            logger.error("Error parsing JSONObject in JSONArray: " + API_COCKTAIL_BYID);
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    public static List<Cocktail> getCocktailByIngredient(String Ingredient) throws RepositoryException, IOException, JSONException {
-        String cdbUrl = API_URL + API_COCKTAIL_BYINGREDIENT + URLEncoder.encode(Ingredient, StandardCharsets.UTF_8);
+    public static List<Cocktail> getCocktailByIngredient(String Ingredient) throws
+            RepositoryException, IOException, JSONException {
+        String cdbUrl = API_URL + apiKeyValue + API_COCKTAIL_BYINGREDIENT + URLEncoder.encode(Ingredient, StandardCharsets.UTF_8);
         String jsonString = null;
         logger.info("**getCocktailByIngredient** URL: " + cdbUrl);
 
@@ -138,14 +151,20 @@ public class CocktailDatabase {
             logger.info("Put Response in Cache ...");
             logger.info("Call API: " + cdbUrl);
         }
-        JSONObject cocktailApiJsonObject = new JSONObject(jsonString);
-        JSONArray cocktailArray = new JSONArray(cocktailApiJsonObject.getString("drinks"));
-
-        return getCocktailsByIngredient(cocktailArray);
+        try {
+            JSONObject cocktailApiJsonObject = new JSONObject(jsonString);
+            JSONArray cocktailArray = new JSONArray(cocktailApiJsonObject.getString("drinks"));
+            return getCocktailsByIngredient(cocktailArray);
+        } catch (JSONException e) {
+            logger.error("Error parsing JSONObject in JSONArray: " + API_COCKTAIL_BYINGREDIENT);
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    public static List<Ingredient> getIngredientByName(String Name) throws RepositoryException, IOException, JSONException {
-        String cdbUrl = API_URL + API_INGREDIENT_BYNAME + URLEncoder.encode(Name, StandardCharsets.UTF_8);
+    public static List<Ingredient> getIngredientByName(String Name) throws
+            RepositoryException, IOException, JSONException {
+        String cdbUrl = API_URL + apiKeyValue + API_INGREDIENT_BYNAME + URLEncoder.encode(Name, StandardCharsets.UTF_8);
         String jsonString = null;
         logger.info("**getIngredientByName** URL: " + cdbUrl);
 
@@ -161,14 +180,21 @@ public class CocktailDatabase {
             logger.info("Put Response in Cache ...");
             logger.info("Call API: " + cdbUrl);
         }
-        JSONObject ingrdientApiJsonObject = new JSONObject(jsonString);
-        JSONArray ingredientArray = new JSONArray(ingrdientApiJsonObject.getString("ingredients"));
 
-        return getIngredient(ingredientArray);
+        try {
+            JSONObject ingrdientApiJsonObject = new JSONObject(jsonString);
+            JSONArray ingredientArray = new JSONArray(ingrdientApiJsonObject.getString("ingredients"));
+            return getIngredient(ingredientArray);
+        } catch (JSONException e) {
+            logger.error("Error parsing JSONObject in JSONArray: " + API_INGREDIENT_BYNAME);
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    public static List<Ingredient> getIngredientById(String Id) throws RepositoryException, IOException, JSONException {
-        String cdbUrl = API_URL + API_INGREDIENT_BYID + Id;
+    public static List<Ingredient> getIngredientById(String Id) throws
+            RepositoryException, IOException, JSONException {
+        String cdbUrl = API_URL + apiKeyValue + API_INGREDIENT_BYID + Id;
         String jsonString = null;
         logger.info("**getIngredientById** URL: " + cdbUrl);
 
@@ -184,10 +210,16 @@ public class CocktailDatabase {
             logger.info("Put Response in Cache ...");
             logger.info("Call API: " + cdbUrl);
         }
-        JSONObject ingrdientApiJsonObject = new JSONObject(jsonString);
-        JSONArray ingredientArray = new JSONArray(ingrdientApiJsonObject.getString("ingredients"));
 
-        return getIngredient(ingredientArray);
+        try {
+            JSONObject ingrdientApiJsonObject = new JSONObject(jsonString);
+            JSONArray ingredientArray = new JSONArray(ingrdientApiJsonObject.getString("ingredients"));
+            return getIngredient(ingredientArray);
+        } catch (JSONException e) {
+            logger.error("Error parsing JSONObject in JSONArray: " + API_INGREDIENT_BYID);
+            e.printStackTrace();
+            return null;
+        }
     }
 
 
@@ -239,7 +271,9 @@ public class CocktailDatabase {
         }
         return COCKTAIL_ARRAY_LIST;
     }
-    public static List<Cocktail> getCocktailsByIngredient(JSONArray cocktailArray) throws IOException, JSONException {
+
+    public static List<Cocktail> getCocktailsByIngredient(JSONArray cocktailArray) throws
+            IOException, JSONException {
         List<Cocktail> COCKTAIL_ARRAY_LIST = new ArrayList<>();
         try {
             for (int i = 0; i < cocktailArray.length(); i++) {
@@ -255,6 +289,7 @@ public class CocktailDatabase {
         }
         return COCKTAIL_ARRAY_LIST;
     }
+
     public static List<Ingredient> getIngredient(JSONArray ingredientArray) throws IOException, JSONException {
         List<Ingredient> INGREDIENT_ARRAY_LIST = new ArrayList<>();
         try {
@@ -277,13 +312,12 @@ public class CocktailDatabase {
     }
 
 
-
     static final String AB = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     static SecureRandom rnd = new SecureRandom();
 
-    public static String randomString(int len){
+    public static String randomString(int len) {
         StringBuilder sb = new StringBuilder(len);
-        for(int i = 0; i < len; i++)
+        for (int i = 0; i < len; i++)
             sb.append(AB.charAt(rnd.nextInt(AB.length())));
         return sb.toString();
     }
