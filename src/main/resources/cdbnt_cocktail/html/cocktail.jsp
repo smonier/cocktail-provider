@@ -21,7 +21,28 @@
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 <template:addResources type="css" resources="cocktail.css"/>
 <jcr:nodeProperty node="${currentNode}" var="cocktailName" name="strDrink"/>
-
+<c:choose>
+    <c:when test="${empty param}">
+        <c:set var="selectedLetter" value='${cdb:getRandomLetter(1)}'/>
+        <c:set var="cocktailList" value="${cdb:getCocktailByLetter(selectedLetter)}"/>
+        <script>document.getElementById("cocktailpageId").innerHTML = "Cocktails starting with ${selectedLetter}";</script>
+    </c:when>
+    <c:when test="${not empty param.letter}">
+        <c:set var="selectedLetter" value='${param.letter}'/>
+        <c:set var="cocktailList" value="${cdb:getCocktailByLetter(selectedLetter)}"/>
+        <script>document.getElementById("cocktailpageId").innerHTML = "Cocktails starting with ${selectedLetter}";</script>
+    </c:when>
+    <c:when test="${not empty param.cocktailName}">
+        <c:set var="cocktailName" value='${param.cocktailName}'/>
+        <c:set var="cocktailList" value="${cdb:getCocktailByName(cocktailName)}"/>
+        <script>document.getElementById("cocktailpageId").innerHTML = "Cocktails named ${cocktailName}";</script>
+    </c:when>
+    <c:when test="${not empty param.ingredient}">
+        <c:set var="cocktailIngredient" value='${param.ingredient}'/>
+        <c:set var="cocktailList" value="${cdb:getCocktailByIngredient(cocktailIngredient)}"/>
+        <script>document.getElementById("cocktailpageId").innerHTML = "Cocktails made of ${cocktailIngredient}";</script>
+    </c:when>
+</c:choose>
 <div class="container">
     <div class="row justify-content-center w-100 mb-3">
         <h2 id="cocktailpageId"></h2>
@@ -150,23 +171,15 @@
 </div>
 <c:choose>
     <c:when test="${empty param}">
-        <c:set var="selectedLetter" value='${cdb:getRandomLetter(1)}'/>
-        <c:set var="cocktailList" value="${cdb:getCocktailByLetter(selectedLetter)}"/>
         <script>document.getElementById("cocktailpageId").innerHTML = "Cocktails starting with ${selectedLetter}";</script>
     </c:when>
     <c:when test="${not empty param.letter}">
-        <c:set var="selectedLetter" value='${param.letter}'/>
-        <c:set var="cocktailList" value="${cdb:getCocktailByLetter(selectedLetter)}"/>
         <script>document.getElementById("cocktailpageId").innerHTML = "Cocktails starting with ${selectedLetter}";</script>
     </c:when>
     <c:when test="${not empty param.cocktailName}">
-        <c:set var="cocktailName" value='${param.cocktailName}'/>
-        <c:set var="cocktailList" value="${cdb:getCocktailByName(cocktailName)}"/>
         <script>document.getElementById("cocktailpageId").innerHTML = "Cocktails named ${cocktailName}";</script>
     </c:when>
     <c:when test="${not empty param.ingredient}">
-        <c:set var="cocktailIngredient" value='${param.ingredient}'/>
-        <c:set var="cocktailList" value="${cdb:getCocktailByIngredient(cocktailIngredient)}"/>
         <script>document.getElementById("cocktailpageId").innerHTML = "Cocktails made of ${cocktailIngredient}";</script>
     </c:when>
 </c:choose>
