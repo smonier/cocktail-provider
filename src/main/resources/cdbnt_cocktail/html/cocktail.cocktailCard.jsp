@@ -26,7 +26,7 @@
         <div class="img-blog ">
             <c:set var="imageURL" value="${cocktail.getCocktailThumb()}"/>
 
-            <c:if test="${not empty imageURL and imageURL ne 'None'}">
+            <c:if test="${not empty imageURL and imageURL ne 'null'}">
                 <img alt="${cocktail.getName()}"
                      src="${cocktail.getCocktailThumb()}">
             </c:if>
@@ -77,7 +77,7 @@
                                                         <c:set var="imageURL"
                                                                value="${ingredientDetail.getIngredientThumb()}"/>
 
-                                                        <c:if test="${not empty imageURL and imageURL ne 'None'}">
+                                                        <c:if test="${not empty imageURL and imageURL ne 'null'}">
                                                             <p class=" text-center">
                                                             <img class="img-fluid"
                                                                  alt="${ingredientDetail.getName()}"
