@@ -1,0 +1,8 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<cdbnt = 'http://www.jahia.org/cocktaildb/nt/1.0'>
+<cdbmix = 'http://www.jahia.org/cocktaildb/mix/1.0'>
+
+[cdbmix:cocktailprovider] > jmix:droppableContent, jmix:editorialContent mixin
+
+[cdbnt:cocktail] > jnt:content, jmix:editorialContent, cdbmix:cocktailprovider

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+        version="2.0">
+
+    <description>Cocktail DB Tag Library</description>
+    <display-name>Cocktail DB</display-name>
+    <tlib-version>1.0</tlib-version>
+    <short-name>cocktailDB</short-name>
+    <uri>http://www.jahia.org/tags/concktaildb</uri>
+    <function>
+        <description>Get CockTail By Name</description>
+        <name>getCocktailByName</name>
+        <function-class>org.jahia.modules.cocktailprovider.taglib.CocktailDatabase</function-class>
+        <function-signature>java.util.List getCocktailByName(java.lang.String)</function-signature>
+    </function>
+    <function>
+        <description>Get CockTail By Letter</description>
+        <name>getCocktailByLetter</name>
+        <function-class>org.jahia.modules.cocktailprovider.taglib.CocktailDatabase</function-class>
+        <function-signature>java.util.List getCocktailByLetter(java.lang.String))</function-signature>
+    </function>
+    <function>
+        <description>Get CockTail By ID</description>
+        <name>getCocktailById</name>
+        <function-class>org.jahia.modules.cocktailprovider.taglib.CocktailDatabase</function-class>
+        <function-signature>org.jahia.modules.cocktailprovider.classes.Cocktail getCocktailById(java.lang.String)</function-signature>
+    </function>
+    <function>
+        <description>Get CockTail By Ingedient</description>
+        <name>getCocktailByIngredient</name>
+        <function-class>org.jahia.modules.cocktailprovider.taglib.CocktailDatabase</function-class>
+        <function-signature>java.util.List getCocktailByIngredient(java.lang.String)</function-signature>
+    </function>
+    <function>
+        <description>Get Ingredient By Name</description>
+        <name>getIngredientByName</name>
+        <function-class>org.jahia.modules.cocktailprovider.taglib.CocktailDatabase</function-class>
+        <function-signature>java.util.List getIngredientByName(java.lang.String)</function-signature>
+    </function>
+    <function>
+        <description>Get Ingredient By Id</description>
+        <name>getIngredientById</name>
+        <function-class>org.jahia.modules.cocktailprovider.taglib.CocktailDatabase</function-class>
+        <function-signature>java.util.List getIngredientById(java.lang.String)</function-signature>
+    </function>
+    <function>
+        <description>Get Random Letter</description>
+        <name>getRandomLetter</name>
+        <function-class>org.jahia.modules.cocktailprovider.taglib.CocktailDatabase</function-class>
+        <function-signature>java.lang.String randomString(int)</function-signature>
+    </function>
+</taglib>
