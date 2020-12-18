@@ -20,29 +20,35 @@
 <%--@elvariable id="currentResource" type="org.jahia.services.render.Resource"--%>
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 <template:addResources type="css" resources="cocktail.css"/>
-<jcr:nodeProperty node="${currentNode}" var="cocktailName" name="strDrink"/>
-<c:choose>
-    <c:when test="${empty param}">
-        <c:set var="selectedLetter" value='${cdb:getRandomLetter(1)}'/>
-        <c:set var="cocktailList" value="${cdb:getCocktailByLetter(selectedLetter)}"/>
-    </c:when>
-    <c:when test="${not empty param.letter}">
-        <c:set var="selectedLetter" value='${param.letter}'/>
-        <c:set var="cocktailList" value="${cdb:getCocktailByLetter(selectedLetter)}"/>
-    </c:when>
-    <c:when test="${not empty param.cocktailName}">
-        <c:set var="cocktailName" value='${param.cocktailName}'/>
-        <c:set var="cocktailList" value="${cdb:getCocktailByName(cocktailName)}"/>
-    </c:when>
-    <c:when test="${not empty param.ingredient}">
-        <c:set var="cocktailIngredient" value='${param.ingredient}'/>
-        <c:set var="cocktailList" value="${cdb:getCocktailByIngredient(cocktailIngredient)}"/>
-    </c:when>
-</c:choose>
+
 <div class="container">
     <div class="row justify-content-center w-100 mb-3">
         <h2 id="cocktailpageId"></h2>
     </div>
+    
+    <c:choose>
+        <c:when test="${empty param}">
+            <c:set var="selectedLetter" value='${cdb:getRandomLetter(1)}'/>
+            <c:set var="cocktailList" value="${cdb:getCocktailByLetter(selectedLetter)}"/>
+            <script>$("#cocktailpageId").html("Cocktails starting with ${selectedLetter}")</script>
+        </c:when>
+        <c:when test="${not empty param.letter}">
+            <c:set var="selectedLetter" value='${param.letter}'/>
+            <c:set var="cocktailList" value="${cdb:getCocktailByLetter(selectedLetter)}"/>
+            <script>$("#cocktailpageId").html("Cocktails starting with ${selectedLetter}")</script>
+        </c:when>
+        <c:when test="${not empty param.cocktailName}">
+            <c:set var="cocktailName" value='${param.cocktailName}'/>
+            <c:set var="cocktailList" value="${cdb:getCocktailByName(cocktailName)}"/>
+            <script>$("#cocktailpageId").html("Cocktails named ${cocktailName}")</script>
+        </c:when>
+        <c:when test="${not empty param.ingredient}">
+            <c:set var="cocktailIngredient" value='${param.ingredient}'/>
+            <c:set var="cocktailList" value="${cdb:getCocktailByIngredient(cocktailIngredient)}"/>
+            <script>$("#cocktailpageId").html("Cocktails made of ${cocktailIngredient}")</script>
+        </c:when>
+    </c:choose>
+
     <div class="row">
         <div class="col-xs-12 w-100">
             <div class="blog-refinement-bar">
@@ -53,7 +59,6 @@
                                href="${url.base}${renderContext.mainResource.node.path}.html?letter=A">A</a>
                         </div>
                         <div class="refinement-item">
-
                             <a class="refinement-link ${selectedLetter == 'B'? ' active' : ''}"
                                href="${url.base}${renderContext.mainResource.node.path}.html?letter=B">B</a>
                         </div>
@@ -167,20 +172,6 @@
         <button type="submit" class="btn btn-primary mb-2">Search</button>
     </form>
 </div>
-<c:choose>
-    <c:when test="${empty param}">
-        <script>$("#cocktailpageId").html("Cocktails starting with ${selectedLetter}")</script>
-    </c:when>
-    <c:when test="${not empty param.letter}">
-        <script>$("#cocktailpageId").html("Cocktails starting with ${selectedLetter}")</script>
-    </c:when>
-    <c:when test="${not empty param.cocktailName}">
-        <script>$("#cocktailpageId").html("Cocktails named ${cocktailName}")</script>
-    </c:when>
-    <c:when test="${not empty param.ingredient}">
-        <script>$("#cocktailpageId").html("Cocktails made of ${cocktailIngredient}")</script>
-    </c:when>
-</c:choose>
 
 <div class="row">
     <c:forEach items="${cocktailList}" var="cocktail" varStatus="status">
