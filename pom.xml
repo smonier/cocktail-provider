@@ -59,8 +59,8 @@
   <name>cocktail-provider</name>
   <description>This is the custom module (cocktail-provider) for running on a Jahia server.</description>
   <scm>
-    <connection>scm:dummy:uri</connection>
-    <developerConnection>scm:dummy:uri</developerConnection>
+    <connection>scm:git:https://github.com/smonier/cocktail-provider.git</connection>
+    <developerConnection>scm:git:https://github.com/smonier/cocktail-provider.git</developerConnection>
   </scm>
   <properties>
     <require-capability>osgi.extender;filter:="(osgi.extender=org.jahia.bundles.blueprint.extender.config)"</require-capability>
