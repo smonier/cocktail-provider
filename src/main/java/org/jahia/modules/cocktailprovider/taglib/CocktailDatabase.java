@@ -14,8 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.regex.Pattern;
+
 
 import org.jahia.modules.cocktailprovider.cache.CrunchifyInMemoryCache;
 import org.jahia.modules.cocktailprovider.classes.Cocktail;

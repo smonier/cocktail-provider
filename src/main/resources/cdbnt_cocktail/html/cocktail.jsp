@@ -164,12 +164,36 @@
         </div>
     </div>
 </div>
+
+<script>
+    const buildAndFireSearchEvent = searchTerm => {
+        if (!window.wem) {
+            return;
+        }
+        console.info("searchTerm: "+searchTerm);
+        const searchEvent = window.wem.buildEvent('search',
+            window.wem.buildTarget('cocktailSearchForm', 'form'),
+            window.wem.buildSourcePage()
+        );
+
+        searchEvent.properties = {
+            originForm: 'cocktailSearchForm',
+            language: window.contextJsParameters.lang,
+            keyword: searchTerm,
+            origin: location.pathname
+        };
+        window.wem.collectEvent(searchEvent,
+            () => console.debug('[buildAndFireSearchEvent] search formEvent sent'),
+            () => console.debug('[buildAndFireSearchEvent] oups search formEvent was not handled properly')
+        );
+    };
+</script>
 <div class="row blog-refinement-bar mb-5 w-100">
     <form class="form-inline justify-content-center w-100"
-          action="${url.base}${renderContext.mainResource.node.path}.html" method="get">
+          >
         <input type="text" class="form-control mb-2 mr-sm-2" id="cocktailName" name="cocktailName"
                placeholder="Cocktail Name">
-        <button type="submit" class="btn btn-primary mb-2">Search</button>
+        <button type="submit" class="btn btn-primary mb-2" onclick="buildAndFireSearchEvent(document.getElementById('cocktailName').value)">Search</button>
     </form>
 </div>
 
